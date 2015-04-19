@@ -1,0 +1,7 @@
+date=2014-02-26
+awk '$1=="Start-Date:" && $2=="'"$date"'" && got_date="yes" {}
+  got_date=="yes" && $1=="Install:" && got_date="no" {
+    for(i=2; i<=NF; i++) {
+      if( $i !~ /,|\)/ && $(i+2) !~ /^automatic\)/ ) print $i } }' \
+  /var/log/apt/history.log |
+  xargs sudo apt-get -s remove
